@@ -438,7 +438,6 @@ Private Sub charset_Click()
      charset = frmFormSubmit.charset.Text
      Select Case charset
         Case "utf-8"
-            MsgBox charset
             txtResponse.Text = UTF8_Decode(txtResponse.Text)
      End Select
 End Sub
@@ -471,17 +470,17 @@ Private Sub cmdSend_Click()
     End If
     
     ' configure winsock
-    Winsock.Protocol = sckTCPProtocol
-    Winsock.RemoteHost = eUrl.Host
+    winsock.Protocol = sckTCPProtocol
+    winsock.RemoteHost = eUrl.Host
     
     If eUrl.Scheme = "http" Then
         If eUrl.Port > 0 Then
-            Winsock.RemotePort = eUrl.Port
+            winsock.RemotePort = eUrl.Port
         Else
-            Winsock.RemotePort = 80
+            winsock.RemotePort = 80
         End If
     ElseIf eUrl.Scheme = vbNullString Then
-        Winsock.RemotePort = 80
+        winsock.RemotePort = 80
     Else
         MsgBox "Invalid protocol schema"
     End If
@@ -553,7 +552,7 @@ Private Sub cmdSend_Click()
 
     txtRequest.Text = strHTTP
     
-    Winsock.Connect
+    winsock.Connect
     
     ' wait for a connection
     While Not blnConnected
@@ -561,7 +560,7 @@ Private Sub cmdSend_Click()
     Wend
     
     ' send the HTTP request
-    Winsock.SendData strHTTP
+    winsock.SendData strHTTP
 End Sub
 
 Private Sub Label3_Click()
@@ -576,7 +575,7 @@ End Sub
 Private Sub winsock_DataArrival(ByVal bytesTotal As Long)
     Dim strResponse As String
 
-    Winsock.GetData strResponse, vbString, bytesTotal
+    winsock.GetData strResponse, vbString, bytesTotal
     
     strResponse = FormatLineEndings(strResponse)
     
@@ -589,13 +588,13 @@ End Sub
 Private Sub winsock_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
     MsgBox Description, vbExclamation, "ERROR"
     
-    Winsock.Close
+    winsock.Close
 End Sub
 
 Private Sub winsock_Close()
     blnConnected = False
     
-    Winsock.Close
+    winsock.Close
 End Sub
 
 ' this function converts all line endings to Windows CrLf line endings
