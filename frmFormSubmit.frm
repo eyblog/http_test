@@ -464,7 +464,7 @@ Private Sub cmdSend_Click()
     eUrl = ExtractUrl(txtUrl.Text)
     
     If eUrl.Host = vbNullString Then
-        MsgBox "Host 未指定", vbCritical, "ERROR"
+        MsgBox "URL 未指定", vbCritical, "ERROR"
     
         Exit Sub
     End If
@@ -549,7 +549,6 @@ Private Sub cmdSend_Click()
     strHTTP = strHTTP & vbCrLf
     strHTTP = strHTTP & strPostData
     
-
     txtRequest.Text = strHTTP
     
     winsock.Connect
@@ -595,6 +594,13 @@ Private Sub winsock_Close()
     blnConnected = False
     
     winsock.Close
+    
+    charset = frmFormSubmit.charset.Text
+    
+    If charset = "utf-8" Then
+        txtResponse.Text = UTF8_Decode(txtResponse.Text)
+    End If
+    
 End Sub
 
 ' this function converts all line endings to Windows CrLf line endings
